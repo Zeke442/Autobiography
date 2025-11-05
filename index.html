@@ -227,6 +227,36 @@
     .cat-sticker { position: absolute; width: 240px; height: 240px; object-fit: contain; z-index: 5; opacity: 0.8; transition: transform 0.3s ease; cursor: grab; }
     .cat-sticker:hover { transform: scale(1.05) rotate(2deg); opacity: 1; }
     .cat-sticker:active { cursor: grabbing; }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .hero { padding: 88px 16px 24px; }
+      .hero-card { padding: 24px 18px; }
+      .profile-img, .inspiration-img { width: 110px; height: 110px; }
+      .section-content { flex-direction: column; align-items: center; }
+      .section-image { width: 100%; height: auto; max-width: 420px; }
+      .section-text { width: 100%; }
+      .toc { top: 8px; padding: 8px; gap: 6px; }
+      .toc a { font-size: 0.9rem; padding: 8px 10px; }
+      .content { padding: 18px 14px; margin: 14px auto 48px; }
+      section { padding: 12px 10px; }
+      .chips { gap: 6px; }
+      .chip { width: 36px; height: 36px; }
+      .chip img { height: 20px; }
+      .float-nav { bottom: 14px; gap: 6px; }
+      .float-nav .btn { padding: 6px 10px; }
+      .back-to-top { right: 12px; bottom: 12px; }
+      /* Hide decorative stickers on mobile to avoid overlap */
+      .cat-sticker { display: none; }
+    }
+
+    @media (max-width: 480px) {
+      .hero { padding: 78px 12px 20px; }
+      .hero-card { padding: 20px 14px; }
+      .profile-img, .inspiration-img { width: 92px; height: 92px; opacity: 0.9; }
+      .toc a { font-size: 0.85rem; padding: 7px 9px; }
+      h1, h2 { letter-spacing: 0.1px; }
+    }
   </style>
 </head>
 <body>
