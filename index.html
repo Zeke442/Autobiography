@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Autobiography - Cloud Sky</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700&family=Quicksand:wght@400;600&family=Poppins:wght@300;400;600;700&family=Dancing+Script:wght@600;700&display=swap');
+    :root { --glass-bg: rgba(80, 108, 139, 0.582); --text: #eaf6ff; --muted: rgba(255,255,255,0.85); --accent: #4c94ff; --accent-2: #a2e4ff; --pink: #ff9bd2; --lilac: #c6b5ff; --mint: #b4f5d1; --shadow: rgba(0,0,0,0.35); --sky-shift: 0; }
+
+    /* Dark mode styles */
+    body.dark-mode {
+      /* background image crossfades via body::after */
+      --text: #cccccc;
+      --muted: rgba(255,255,255,0.7);
+      --glass-bg: rgba(20,20,20,0.8);
+      --shadow: rgba(0,0,0,0.6);
+    }
+    body.dark-mode .hero h1 { color: #ffffff; transition: color 0.5s ease; }
+    body.dark-mode p { color: rgba(204,204,204,0.95); transition: color 0.5s ease; }
+    body.dark-mode section:nth-of-type(even) p { color: rgba(200,200,200,0.95); transition: color 0.5s ease; }
+    body.dark-mode section:nth-of-type(odd) p { color: rgba(210,210,210,0.96); transition: color 0.5s ease; }
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow-x: hidden;
+      font-family: "Quicksand", "Poppins", sans-serif;
+      color: var(--text);
+      transition: background 1s ease, color 0.5s ease;
+    }
+
+    /* Page fade transitions */
+    body { opacity: 0; transition: opacity 360ms ease; }
+    body.fade-in { opacity: 1; }
+    body.fade-out { opacity: 0; }
+
+    /* Sky background */
+    body {
+      background: url('sky.png') no-repeat center center fixed;
+      background-size: cover;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(
+        to bottom,
+        rgba(135, 206, 250, calc(0.35 + var(--sky-shift) * 0.05)) 0%,
+        rgba(255, 183, 77, calc(var(--sky-shift) * 0.25)) 60%,
+        rgba(199, 138, 255, calc(var(--sky-shift) * 0.35)) 100%
+      );
+      transition: background 200ms linear;
+      z-index: 0;
+    }
+    /* Crossfade overlay for dark background image */
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: url('darksky.png') no-repeat center center fixed;
+      background-size: cover;
+      opacity: 0;
+      transition: opacity 500ms ease;
+      pointer-events: none;
+      z-index: 0;
+    }
+    body.dark-mode::after { opacity: 1; }
+
+    /* Moving clouds */
+    .clouds {
+      position: absolute;
+      top: 10%;
+      left: 0%;
+      transform: translateX(-50%);
+      width: 200%;
+      height: 600px;
+      background: url('clouds.png') repeat-x;
+      background-size: 5000px;
+      animation: moveClouds 100s linear infinite;
+      pointer-events: none;
+      opacity: 0.7;
+      z-index: 1;
+    }
+
+    /* Parallax second cloud layer */
+    .clouds.back {
+      top: 5%;
+      opacity: 0.45;
+      transform: translateX(-50%) scale(1.1);
+      animation-duration: 160s;
+      filter: blur(1px);
+    }
+
+    @keyframes moveClouds {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    .topbar { position: fixed; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); opacity: 0.85; z-index: 100; }
+    .hero { position: relative; z-index: 2; padding: 120px 24px 40px; display: grid; place-items: center; text-align: center; }
+    .hero-card { background: var(--glass-bg); backdrop-filter: blur(8px); border-radius: 18px; padding: 36px 28px; width: min(960px, 88%); box-shadow: 0 10px 30px var(--shadow); border: 1px solid rgba(255,255,255,0.12); }
+    .hero h1 { margin: 0 0 8px; font-size: clamp(1.8rem, 4.2vw, 3rem); line-height: 1.15; color: #d8f3ff; letter-spacing: 0.3px; }
+    .hero h1 { font-family: "Dancing Script", "Baloo 2", "Quicksand", sans-serif; }
+    .hero .subtitle { margin: 0 0 18px; color: var(--muted); font-weight: 400; }
+    .chips { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 8px; }
+    .chip { padding: 8px; border-radius: 50%; background: linear-gradient(135deg, rgba(255,155,210,0.22), rgba(198,181,255,0.22)); border: 1px solid rgba(255,255,255,0.28); color: #e8f7ff; font-size: 0.86rem; box-shadow: 0 6px 16px rgba(0,0,0,0.18) inset; backdrop-filter: blur(4px); transition: transform 0.2s ease, box-shadow 0.2s ease; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; }
+    .chip:hover { transform: translateY(-2px); box-shadow: 0 10px 18px rgba(0,0,0,0.25) inset; }
+    .chip img { height: 24px; width: auto; vertical-align: middle; }
+    .toc { position: sticky; top: 10px; z-index: 3; margin: 10px auto 0; width: min(980px, 92%); display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; padding: 10px; background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; backdrop-filter: blur(6px); box-shadow: 0 6px 20px var(--shadow); }
+    .toc a { color: var(--text); text-decoration: none; padding: 8px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.14); transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease; font-size: 0.94rem; background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06)); box-shadow: 0 6px 14px rgba(0,0,0,0.18); }
+    .toc a:hover { transform: translateY(-2px); background: linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.10)); box-shadow: 0 10px 22px rgba(0,0,0,0.28); }
+    /* Content styling */
+    .content {
+      position: relative;
+      z-index: 2;
+      background: var(--glass-bg);
+      margin: 18px auto 60px;
+      padding: 26px 22px;
+      border-radius: 16px;
+      width: min(960px, 88%);
+      box-shadow: 0 10px 30px var(--shadow);
+      border: 1px solid rgba(255,255,255,0.12);
+      backdrop-filter: blur(8px);
+    }
+
+    h1, h2 {
+      color: #d8f3ff;
+      text-align: center;
+      font-family: "Baloo 2", "Quicksand", "Poppins", sans-serif;
+      letter-spacing: 0.2px;
+    }
+    /* Colorful heading gradients */
+    .hero h1,
+    h2.section-title {
+      background: linear-gradient(90deg, var(--pink), var(--lilac), var(--mint));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 10px rgba(255,255,255,0.06);
+    }
+    /* Ensure badge text stays visible inside gradient headings */
+    .section-title .badge { color: #ffffff; -webkit-text-fill-color: #ffffff; }
+
+    section { margin-bottom: 36px; scroll-margin-top: 110px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); border-radius: 16px; padding: 16px 14px; box-shadow: 0 8px 20px rgba(0,0,0,0.18); transition: transform 0.2s ease, box-shadow 0.2s ease, background 300ms ease, background-color 300ms ease, border-color 300ms ease, color 300ms ease; }
+    section:hover { transform: translateY(-3px); background: rgba(255,255,255,0.08); box-shadow: 0 14px 30px rgba(0,0,0,0.28); }
+
+    p {
+      text-align: center;
+      line-height: 1.7;
+      font-size: 1.05rem;
+      color: rgba(234, 246, 255, 0.95);
+    }
+    /* Slightly varied tint per section for visual interest */
+    section:nth-of-type(even) p { color: rgba(230, 236, 255, 0.95); }
+    section:nth-of-type(odd) p { color: rgba(240, 250, 255, 0.96); }
+    /* Emphasis colors */
+    p em { color: var(--mint); font-style: italic; }
+    p strong { color: var(--pink); font-weight: 700; }
+
+    hr { border: none; border-top: 1px solid rgba(255,255,255,0.3); margin: 20px 0; }
+    .section-title { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: 0.2px; position: relative; }
+    .section-title::after { content: ' ✧ ✿ ✧ '; position: relative; margin-left: 8px; font-weight: 400; color: #f6eaff; opacity: 0.85; }
+    .badge { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 999px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); font-size: 0.95rem; }
+
+    /* Title hover glow */
+    .section-title:hover { text-shadow: 0 0 12px rgba(255, 155, 210, 0.45); }
+    .section-title:hover .badge { box-shadow: 0 0 10px rgba(76,148,255,0.55); }
+    .footer { text-align: center; color: var(--muted); margin: 26px 0 40px; font-size: 0.95rem; }
+    .back-to-top { position: fixed; right: 18px; bottom: 18px; z-index: 10; padding: 10px 12px; border-radius: 999px; background: linear-gradient(135deg, rgba(255,155,210,0.28), rgba(76,148,255,0.28)); color: var(--text); border: 1px solid rgba(255,255,255,0.18); cursor: pointer; box-shadow: 0 6px 20px var(--shadow); display: none; backdrop-filter: blur(6px); transition: background 300ms ease, background-color 300ms ease, border-color 300ms ease, color 300ms ease, box-shadow 300ms ease; }
+    .back-to-top.show { display: inline-flex; }
+    .back-to-top span { display: inline-block; transition: transform 300ms ease; }
+    .back-to-top:hover span { transform: translateY(-4px) rotate(-8deg); }
+    html { scroll-behavior: smooth; }
+    .reveal { opacity: 0; transform: translateY(16px) scale(0.995); transition: opacity 500ms ease, transform 500ms ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0) scale(1); }
+
+    /* Floating section nav */
+    .float-nav { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); display: flex; gap: 8px; z-index: 11; }
+    .float-nav .btn { padding: 8px 12px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.18); background: rgba(0,0,0,0.35); color: var(--text); backdrop-filter: blur(6px); cursor: pointer; transition: background 300ms ease, background-color 300ms ease, border-color 300ms ease, color 300ms ease, box-shadow 300ms ease; }
+
+    /* Smooth theme transitions for panels */
+    .hero-card,
+    .content,
+    section,
+    .toc,
+    .chip,
+    .back-to-top,
+    .float-nav .btn,
+    .topbar {
+      transition: background 400ms ease, background-color 400ms ease, border-color 400ms ease, color 400ms ease, box-shadow 400ms ease, filter 400ms ease;
+    }
+
+    /* Sparkles at bottom */
+    .sparkles { position: fixed; left: 0; right: 0; bottom: 0; height: 30vh; pointer-events: none; z-index: 0; overflow: hidden; }
+    .sparkle { position: absolute; bottom: -10px; width: 3px; height: 3px; background: radial-gradient(circle, #ffffff 0%, rgba(255,255,255,0.2) 70%); border-radius: 50%; opacity: 0; animation: twinkle 6s ease-in-out infinite; }
+    @keyframes twinkle { 0% { transform: translateY(0) scale(0.6); opacity: 0; } 20% { opacity: 0.7; } 60% { opacity: 0.4; } 100% { transform: translateY(-24vh) scale(1); opacity: 0; } }
+
+    /* Music toggle */
+    .music-toggle { position: fixed; top: 14px; right: 30px; z-index: 101; padding: 10px 14px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.35); color: var(--text); backdrop-filter: blur(6px); cursor: pointer; }
+
+    /* Dark mode toggle */
+    .dark-mode-toggle { position: fixed; top: 60px; right: 30px; z-index: 101; padding: 10px 14px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.35); color: var(--text); backdrop-filter: blur(6px); cursor: pointer; }
+
+    /* Profile image - circular in upper left */
+    .profile-img { position: fixed; top: 14px; left: 14px; z-index: 101; width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(255,255,255,0.3); box-shadow: 0 8px 24px rgba(0,0,0,0.4); backdrop-filter: blur(4px); transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .profile-img:hover { transform: scale(1.08); box-shadow: 0 12px 32px rgba(0,0,0,0.5); }
+
+    /* Inspiration image - circular in lower right */
+    .inspiration-img { position: fixed; bottom: 14px; right: 14px; z-index: 101; width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(255,255,255,0.3); box-shadow: 0 8px 24px rgba(0,0,0,0.4); backdrop-filter: blur(4px); transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .inspiration-img:hover { transform: scale(1.08); box-shadow: 0 12px 32px rgba(0,0,0,0.5); }
+
+    /* Section images - beside sections */
+    .section-image { width: 280px; height: 200px; object-fit: cover; border-radius: 16px; border: 2px solid rgba(255,255,255,0.2); box-shadow: 0 8px 20px rgba(0,0,0,0.3); margin: 0; flex-shrink: 0; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .section-image:hover { transform: scale(1.03); box-shadow: 0 12px 28px rgba(0,0,0,0.4); }
+    .section-content { display: flex; flex-direction: row; gap: 16px; align-items: flex-start; }
+    .images-column { display: flex; flex-direction: column; gap: 16px; }
+    .section-text { flex: 1; }
+    @media (min-width: 768px) {
+      .section-content { gap: 20px; }
+      .section-image { width: 300px; height: 220px; }
+    }
+
+    /* Cat stickers */
+    .cat-sticker { position: absolute; width: 240px; height: 240px; object-fit: contain; z-index: 5; opacity: 0.8; transition: transform 0.3s ease; cursor: grab; }
+    .cat-sticker:hover { transform: scale(1.05) rotate(2deg); opacity: 1; }
+    .cat-sticker:active { cursor: grabbing; }
+  </style>
+</head>
+<body>
+  <div class="topbar"></div>
+  <div class="clouds back"></div>
+  <div class="clouds"></div>
+  <div class="sparkles" id="sparkles"></div>
+  <img src="profile.jpeg" alt="Luis Gabriel R. Espinas" class="profile-img">
+  <img src="amber2.jpeg" alt="Inspiration" class="inspiration-img">
+  <button class="music-toggle" id="musicToggle" aria-label="Toggle music">🎵</button>
+  <button class="dark-mode-toggle" id="darkModeToggle" aria-label="Toggle dark mode">🌙</button>
+
+  <!-- Cat stickers -->
+  <img src="cat1.png" alt="Cat sticker" class="cat-sticker">
+  <img src="cat2.png" alt="Cat sticker" class="cat-sticker">
+  <img src="cat3.png" alt="Cat sticker" class="cat-sticker">
+  <img src="cat4.png" alt="Cat sticker" class="cat-sticker">
+
+  <header class="hero">
+    <div class="hero-card">
+      <h1>BEST LIFE EVER</h1>
+      <p class="subtitle">Written by <strong>Luis Gabriel R. Espinas</strong></p>
+      <div class="chips">
+        <a class="chip" href="https://www.facebook.com/luisgabrielrespinas" target="_blank"><img src="facebook.png" alt="Facebook" /></a>
+        <a class="chip" href="https://github.com/Zeke442" target="_blank"><img src="github-sign.png" alt="GitHub" /></a>
+        <a class="chip" href="https://www.instagram.com/wiswis.gab/" target="_blank"><img src="instagram.png" alt="Instagram" /></a>
+        <a class="chip" href="https://www.tiktok.com/@wiswis.gab?lang=en" target="_blank"><img src="tiktok.png" alt="TikTok" /></a>
+      </div>
+    </div>
+  </header>
+
+  <nav class="toc">
+    <a href="#introduction">🧒 Introduction</a>
+    <a href="#early-life">🏠 Early Life</a>
+    <a href="#education">🎓 Education</a>
+    <a href="#family-friends">❤️ Family & Friends</a>
+    <a href="#challenges">💭 Challenges</a>
+    <a href="#achievements">🌟 Achievements</a>
+    <a href="#growth">🌱 Growth & Beliefs</a>
+    <a href="#present">🚀 Present</a>
+    <a href="#future">🎯 Future Plans</a>
+    <a href="#conclusion">📝 Conclusion</a>
+  </nav>
+
+  <div class="content">
+    <section id="introduction" class="reveal">
+      <h2 class="section-title"><span class="badge">1</span> 🧒 Introduction</h2>
+      <p>Hi, I'm Luis and first of all, thank you for taking the time to visit my website and read my story. My name is <strong>Luis Gabriel R. Espinas</strong>, and I was born in <em>Taguig City</em>. I'm currently 19 years old, living a simple yet fulfilling life surrounded by a decent family and supportive friends.</p>
+      <p>The reason I chose to write this autobiography is not to define myself, but to share my journey because, to me, <em>"giving definition means restricting the potential to change."</em> Life constantly evolves, and I believe we grow through every decision, challenge, and experience. My goal is simply to share my path and the lessons I've learned along the way.</p>
+    </section>
+
+    <section id="early-life" class="reveal">
+      <h2 class="section-title"><span class="badge">2</span> 🏠 Early Life / Childhood</h2>
+      <div class="section-content">
+        <div class="images-column">
+          <img src="childhood.jpg" alt="Childhood memories" class="section-image" loading="lazy">
+          <img src="familyold.jpg" alt="Childhood memories" class="section-image" loading="lazy">
+        </div>
+        <div class="section-text">
+          <p>I was born into a humble and loving family. My father, <strong>Joel P. Espinas</strong>, works as a driver and bookkeeper. My mother, <strong>Venus Ruiz Espinas</strong>, is a homemaker who has always cared for us with patience and love. I have two siblings: <strong>Karl Angelo R. Espinas</strong>, my younger brother who is currently in senior high school, and <strong>Cherish Amber R. Espinas</strong>, my youngest sister who's currently in kindergarten.</p>
+          <p>Growing up, my childhood was full of adventure and sometimes, mischief. I often found myself in near-death situations simply because I loved exploring. I would climb trees, run through streets, and play outside until the sun went down. I used to get into little fights with my friends at school, but we always ended up laughing afterward. Those moments taught me a lot about forgiveness and the importance of companionship.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="education" class="reveal">
+      <h2 class="section-title"><span class="badge">3</span> 🎓 Education</h2>
+      <div class="section-content">
+        <div class="images-column">
+          <img src="elem.jpg" alt="Elementary school memories" class="section-image" loading="lazy">
+          <img src="high.jpeg" alt="High school memories" class="section-image" loading="lazy">
+        </div>
+        <div class="section-text">
+          <p>I began my education at <em>Bagong Nayon 2 Elementary School</em>, continued to <em>Antipolo National Science and Technology High School</em>, and am now pursuing my college studies at <em>ICCT Colleges</em>.</p>
+          <p>Although I wasn't the most active in extracurricular activities, I always joined Intramurals to play sports and test my physical limits. I was also part of an <strong>Anti-Illegal Drug Club</strong>, where we raised awareness about the dangers of substance abuse.</p>
+          <p>Academically, I graduated with <strong>honors in junior high school</strong> and with <strong>high honors in senior high school</strong>. One teacher who deeply influenced me was <strong>Sir Angelo Dorosan</strong>, who helped me not only with my academic struggles but also with personal issues in life.</p>
+          <p>My favorite subjects have always been <strong>Mathematics and Science</strong> particularly calculus, trigonometry, geometry, biology, physics, and chemistry. I've always loved how these subjects explain the world logically and beautifully.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="family-friends" class="reveal">
+      <h2 class="section-title"><span class="badge">4</span> ❤️ Family and Friends</h2>
+      <div class="section-content">
+        <div class="images-column">
+          <img src="family.jpeg" alt="Family and friends memories" class="section-image" loading="lazy">
+          <img src="friends.jpeg" alt="Childhood memories" class="section-image" loading="lazy">
+        </div>
+        <div class="section-text">
+          <p>My family and friends play an irreplaceable role in my life. They serve as my foundation, my compass, and my guiding light toward my purpose. They remind me that I'm never truly alone, no matter how hard life gets.</p>
+          <p>One of the most important lessons they've taught me is to appreciate what I have now even the challenges because those struggles make us stronger when faced with discipline and willingness to learn.</p>
+          <p>Some of my best memories involve spending time with my family and friends in our <strong>Jehovah's Witness ministry</strong>. We visit different places together and speak to people about faith and hope. Those experiences have taught me the joy of giving and the peace that comes from serving others.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="challenges" class="reveal">
+      <h2 class="section-title"><span class="badge">5</span> 💭 Challenges and Life Lessons</h2>
+      <div class="section-content">
+        <div class="section-text">
+          <p>Life hasn't always been easy. One of my greatest struggles has been <strong>balancing my secular education with my ministry and worship</strong>. Managing both at once has been overwhelming, but I learned perseverance through faith.</p>
+          <p>Another turning point was my <strong>first breakup</strong> it was painful, but it helped me understand my emotional limits and priorities. It taught me that I shouldn't give everything all at once and that love must also include self-respect. Above all, I learned to never give up on God, because His guidance remains steady even when my own emotions fail me.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="achievements" class="reveal">
+      <h2 class="section-title"><span class="badge">6</span> 🌟 Achievements and Successes</h2>
+      <div class="section-content">
+        <div class="section-text">
+          <p>Some of my proudest accomplishments include graduating with <strong>honors in junior high school</strong> and with <strong>high honors in senior high school</strong>. These milestones remind me that hard work and consistency always pay off.</p>
+          <p>However, beyond academics, what I'm most proud of is my <strong>faith</strong> being part of my religion has given me the strength to make better choices and uphold integrity. Books have taught me knowledge, but the Bible has taught me the best principles and morals to live by.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="growth" class="reveal">
+      <h2 class="section-title"><span class="badge">7</span> 🌱 Personal Growth and Beliefs</h2>
+      <div class="section-content">
+        <div class="images-column">
+          <img src="beach.jpeg" alt="Childhood memories" class="section-image" loading="lazy">
+          <img src="gym.jpeg" alt="Childhood memories" class="section-image" loading="lazy">
+        </div>
+        <div class="section-text">
+          <p>My values are rooted in the <strong>Bible</strong>, which guides me to live a disciplined and purposeful life. My main goal is simple: to have a decent job, build a loving family, and live a life that reflects kindness and humility.</p>
+          <p>Over time, I've grown stronger not only mentally but also physically. Going to the gym has helped me become more disciplined. I've also learned to focus on personal growth rather than distractions like games and entertainment.</p>
+          <p>The people who helped me mature the most are my parents, my close adult friends, and, surprisingly, my past heartbreak all of which shaped me into a more understanding and grounded person.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="present" class="reveal">
+      <h2 class="section-title"><span class="badge">8</span> 🚀 Present Life</h2>
+      <div class="section-content">
+        <div class="images-column">
+          <img src="sunset.jpeg" alt="Childhood memories" class="section-image" loading="lazy">
+          <img src="heartsky.jpeg" alt="Childhood memories" class="section-image" loading="lazy">
+        </div>
+        <div class="section-text">
+          <p>Right now, my life is filled with learning and creativity. I study hard, but I also make time for my hobbies. I <strong>take pictures</strong> mostly. I also play <strong>guitar</strong>, go to the <strong>gym</strong>, <strong>cook</strong> (though I admit I'm not great at remembering recipes), and I also <strong>paint and draw</strong> whenever inspiration strikes. I love taking photos of beautiful sceneries they remind me how amazing life can be in its simplest moments.</p>
+          <p>What keeps me motivated is my <strong>faith in God</strong> and the love I see among people who care for each other. Seeing kindness in action inspires me to keep moving forward.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="future" class="reveal">
+      <h2 class="section-title"><span class="badge">9</span> 🎯 Future Plans and Dreams</h2>
+      <p>My dream is to have a <strong>stable career</strong>, live a <strong>decent lifestyle</strong>, and raise a <strong>loving family</strong> of my own. I don't aspire to be the richest or most famous I just want to live a meaningful and honest life.</p>
+      <p>I plan to achieve these goals by walking the good and humble path, making decisions that align with my faith, and continuously improving myself. Ultimately, I want to become a pure, loving person who reflects the fruits of faithfulness in everything I do.</p>
+    </section>
+
+    <section id="conclusion" class="reveal">
+      <h2 class="section-title"><span class="badge">10</span> 📝 Conclusion</h2>
+      <p>Every busy day feels exciting, and every quiet day feels peaceful. I've learned to embrace both to enjoy the challenges and rest in the calm moments. Life, for me, is about learning, accepting, and loving. I believe love is the most enjoyable and rewarding thing we can ever share.</p>
+      <p>So far, life has taught me that everything happens for a reason or sometimes, even without one. Every choice I make leads to new outcomes, and though I don't always know what's right, the mystery of life keeps it thrilling. Even in my lowest points, God has never failed to lift me up.</p>
+      <p>If I could leave one message for anyone reading this, it would be from <strong>1 Corinthians 10:13</strong>:</p>
+      <p style="font-style: italic; padding: 16px; background: rgba(255,255,255,0.08); border-radius: 12px; border-left: 4px solid var(--pink);">"No temptation has overtaken you except what is common to mankind. And God is faithful; he will not let you be tempted beyond what you can bear. But when you are tempted, he will also provide a way out so that you can endure it."</p>
+      <p>This verse reminds me that no matter how heavy life feels, there is always hope and God's guidance is always enough.</p>
+    </section>
+    <div class="footer">© <span id="year"></span> All rights reserved ng Pogi.</div>
+  </div>
+
+  <button class="back-to-top" id="toTop" aria-label="Back to top"><span>🚀</span></button>
+  <div class="float-nav" id="floatNav">
+    <button class="btn" data-nav="top">⬆️ Top</button>
+    <button class="btn" data-nav="prev">⟵ Prev</button>
+    <button class="btn" data-nav="next">Next ⟶</button>
+    <button class="btn" data-nav="end">🏁 End</button>
+  </div>
+
+  <script>
+    // Fade in on load
+    window.addEventListener('DOMContentLoaded', () => {
+      document.body.classList.add('fade-in');
+    });
+
+    // Intercept link clicks for fade-out navigation
+    window.addEventListener('click', (e) => {
+      const anchor = e.target.closest('a');
+      if (!anchor) return;
+      const href = anchor.getAttribute('href');
+      if (!href || href.startsWith('#') || anchor.target === '_blank') return;
+      // Same-origin or relative only
+      const url = anchor.href;
+      if (!url || (url.startsWith('http') && !url.startsWith(location.origin))) return;
+      e.preventDefault();
+      document.body.classList.remove('fade-in');
+      document.body.classList.add('fade-out');
+      setTimeout(() => { window.location.href = url; }, 320);
+    }, true);
+
+    const toTop = document.getElementById('toTop');
+    const yearSpan = document.getElementById('year');
+    if (yearSpan) { yearSpan.textContent = new Date().getFullYear(); }
+    const onScroll = () => {
+      if (window.scrollY > 300) { toTop.classList.add('show'); } else { toTop.classList.remove('show'); }
+    };
+    window.addEventListener('scroll', onScroll);
+    toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    // Smooth, slower scrolling for TOC links with offset so headings are visible
+    const toc = document.querySelector('.toc');
+    const links = document.querySelectorAll('.toc a[href^="#"]');
+
+    links.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const id = link.getAttribute('href').slice(1);
+        const target = document.getElementById(id);
+        if (!target) return;
+        // Use native smooth scrolling with CSS scroll-margin-top for offset
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        history.pushState(null, '', '#' + id);
+      });
+    });
+
+    // Scroll reveal for cute transitions
+    const revealEls = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    revealEls.forEach(el => io.observe(el));
+
+    // Sky gradient shift based on scroll
+    function updateSkyShift() {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = Math.max(0, Math.min(1, window.scrollY / (max || 1)));
+      document.documentElement.style.setProperty('--sky-shift', progress.toFixed(3));
+    }
+    window.addEventListener('scroll', updateSkyShift);
+    updateSkyShift();
+
+    // Floating nav logic
+    const sections = Array.from(document.querySelectorAll('section'));
+    function currentSectionIndex() {
+      const y = window.scrollY + window.innerHeight * 0.3;
+      let idx = 0;
+      for (let i = 0; i < sections.length; i++) {
+        const r = sections[i].getBoundingClientRect();
+        const top = r.top + window.scrollY;
+        if (top <= y) idx = i; else break;
+      }
+      return idx;
+    }
+    const floatNav = document.getElementById('floatNav');
+    floatNav.addEventListener('click', (e) => {
+      const btn = e.target.closest('.btn'); if (!btn) return;
+      const action = btn.getAttribute('data-nav');
+      let targetY = 0;
+      if (action === 'top') targetY = 0;
+      if (action === 'end') targetY = document.documentElement.scrollHeight;
+      if (action === 'prev' || action === 'next') {
+        const idx = currentSectionIndex();
+        const nextIdx = action === 'next' ? Math.min(sections.length - 1, idx + 1) : Math.max(0, idx - 1);
+        const rect = sections[nextIdx].getBoundingClientRect();
+        targetY = rect.top + window.scrollY - 100;
+      }
+      window.scrollTo({ top: targetY, behavior: 'smooth' });
+    });
+
+    // Sparkles generate
+    const sparkles = document.getElementById('sparkles');
+    for (let i = 0; i < 40; i++) {
+      const s = document.createElement('div');
+      s.className = 'sparkle';
+      s.style.left = Math.random() * 100 + '%';
+      s.style.animationDelay = (Math.random() * 6) + 's';
+      s.style.animationDuration = (5 + Math.random() * 6) + 's';
+      sparkles.appendChild(s);
+    }
+
+    // Background music toggle (user-gesture to play)
+    const music = new Audio('music.mp3');
+    music.loop = true;
+    const musicToggle = document.getElementById('musicToggle');
+    let isPlaying = false;
+    musicToggle.addEventListener('click', async () => {
+      try {
+        if (!isPlaying) { await music.play(); isPlaying = true; musicToggle.textContent = '🎵'; }
+        else { music.pause(); isPlaying = false; musicToggle.textContent = '🔇'; }
+      } catch (err) { console.warn('Audio play blocked:', err); }
+    });
+
+    // Dark mode toggle
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    let isDarkMode = localStorage.getItem('darkMode') === 'true';
+    if (isDarkMode) {
+      document.body.classList.add('dark-mode');
+      darkModeToggle.textContent = '☀️';
+      music.src = 'musicdark.mp3';
+    }
+    darkModeToggle.addEventListener('click', () => {
+      isDarkMode = !isDarkMode;
+      document.body.classList.toggle('dark-mode');
+      darkModeToggle.textContent = isDarkMode ? '☀️' : '🌙';
+      localStorage.setItem('darkMode', isDarkMode);
+      music.src = isDarkMode ? 'musicdark.mp3' : 'music.mp3';
+      if (isPlaying) {
+        music.pause();
+        music.load();
+        music.play().then(() => { isPlaying = true; }).catch(err => console.warn('Audio play blocked:', err));
+      }
+    });
+
+    // Position cat stickers randomly and make them draggable
+    const catStickers = document.querySelectorAll('.cat-sticker');
+    catStickers.forEach(sticker => {
+      const randomX = Math.random() * (window.innerWidth - 240);
+      const randomY = Math.random() * (window.innerHeight - 240);
+      sticker.style.left = randomX + 'px';
+      sticker.style.top = randomY + 'px';
+
+      // Dragging functionality
+      let isDragging = false;
+      let dragOffsetX, dragOffsetY;
+
+      sticker.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        dragOffsetX = e.clientX - sticker.offsetLeft;
+        dragOffsetY = e.clientY - sticker.offsetTop;
+        sticker.style.cursor = 'grabbing';
+        e.preventDefault(); // Prevent text selection
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+          sticker.style.left = (e.clientX - dragOffsetX) + 'px';
+          sticker.style.top = (e.clientY - dragOffsetY) + 'px';
+        }
+      });
+
+      document.addEventListener('mouseup', () => {
+        if (isDragging) {
+          isDragging = false;
+          sticker.style.cursor = 'grab';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Sky background */
+body {
+  background: url('sky.png') no-repeat center center fixed;
+  background-size: cover;
+}
+
+/* Moving clouds */
+.clouds {
+  position: absolute;
+  top: 10%;
+  left: 70px;
+  width: 200%;
+  height: 600px;
+  background: url('clouds.png') repeat-x;
+  background-size: 5000px;
+  animation: moveClouds 100s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes moveClouds {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
